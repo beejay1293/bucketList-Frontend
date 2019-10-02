@@ -1,17 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
-import reducers from '../reducers';
+import rootReducer, { history } from './reducers';
 
-const initialState = {};
-const middleware = [thunk];
+const enhancers = [];
+const middlewares = [thunk, routerMiddleware(history)];
 
-const store = createStore(
-  reducers,
-  initialState,
-  compose(
-    applyMiddleware(...middleware),
-    // eslint-disable-next-line no-underscore-dangle
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  ),
-);
+if (process.env.NODE_ENV === 'development') {
+    enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+}
+
+const composedEnhancers = compose(applyMiddleware(...middlewares), ...enhancers);
+const store = createStore(rootReducer, composedEnhancers);
+
 export default store;

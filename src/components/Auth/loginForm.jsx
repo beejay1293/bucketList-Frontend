@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Proptype from 'prop-types';
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import Input from './input';
-import loginAction from '../../actions/login';
+import loginAction from '../../stores/actions/auth';
 
 export class LoginForm extends Component {
   state = {
@@ -11,18 +11,22 @@ export class LoginForm extends Component {
     password:'' 
   }
 
-  onChange = e => this.setState({ [e.target.name]: e.target.value });
+  handleInput(e){
+    const {name, value } = e.target;
+    this.setState({[name]: value});
+  } 
 
-  onSubmit = (event) => {
-    event.preventDefault();
+
+  handleSubmit = (e) => {
+    e.preventDefault();
     const { email, password } = this.state;
-    const obj = { email, password };
-    this.props.loginAction(obj);
+    const userDetails = { email, password };
+    this.props.login( 'login', userDetails, this.props.history);
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.login !== '') {
-      this.props.history.push('/dashbord')
+  componentWillMount(prevProps, prevState) {
+    if (this.props.authenticated) {
+      this.props.history.push('/dashboard')
     }
   }
   
@@ -31,7 +35,8 @@ export class LoginForm extends Component {
     return (
       <form onSubmit={this.onSubmit} className="login-form" >
         <div className="login_container">
-          <div className="feedback-message-login" />
+          <div className="feedback-message-login">
+          </div>
           <hr />
           <Input
             type="email"
@@ -39,7 +44,7 @@ export class LoginForm extends Component {
             name="email"
             id="email"
             value={email}
-            onChange={this.onChange} 
+            onChange={e => this.handleInput(e)} 
           />
           <Input
             type="password"
@@ -47,14 +52,15 @@ export class LoginForm extends Component {
             name="password"
             id="password"
             value={password}
-            onChange={this.onChange}
+            onChange={e => this.handleInput(e)}
           />
 
           <hr />
-          <button type="submit" className="loginbtn" id="sign-in-btn">
-            <div className="tit">Login</div>
+          <button type="submit" className="loginbtn" id="sign-in-btn" onClick={e => this.handleSubmit(e)} disabled = {this.props.loading}>
+          <div className="tit" >{this.props.loading ? 'Loading...' : 'Login'}</div>
+            {this.props.loading ? <i className="fas fa-spinner btnspinner" id="spinbtn"> </i> : ''}
             <i className="fas fa-spinner btnspinner" id="spinbtn"> </i>
-          </button>
+          </button> 
           <em className="forgot__password"><Link to='#'>Forgot Password? </Link></em>
         </div>
       </form>
@@ -63,18 +69,22 @@ export class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  loginAction: Proptype.func.isRequired,
-  login: Proptype.string.isRequired,
-  loginERROR: Proptype.string.isRequired,
-  history: Proptype.object.isRequired,
+  login: propTypes.func.isRequired,
+  history: propTypes.shape({ push:propTypes.func }),
 };
 
+const mapDispatchToProps = {
+ login: loginAction,
+}
+
 const mapStateToProps = state => ({
-  login: state.login.token,
-  loginERROR: state.login.error,
+  user: state.auth.user,
+  error: state.auth.error,
+  loading: state.auth.isLoading,
+  authenticated: state.auth.isAuthenticated,
 });
 
 export default connect(
   mapStateToProps,
-  { loginAction },
+  mapDispatchToProps,
 )(withRouter(LoginForm));
