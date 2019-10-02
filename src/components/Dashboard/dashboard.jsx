@@ -1,27 +1,36 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Header from './header';
-import SideBar from './sidebar';
-import Main from './mainbody';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { bucketList } from '../../stores/actions/bucketlists';
 
-class Dashboard extends PureComponent {
+export class Dashboard extends Component {
+  state = {
 
-  componentDidMount(){
+  };
 
+
+  componentDidMount() {
+    this.props.getBucketList();
   }
+
+
   render() {
+
+
     return (
       <section className="main">
-        <Header />
-        <SideBar />
-        <Main />
+        <Header name={this.props.user.lastname}/>
       </section>
     );
   }
 }
 
-
 const mapStateToProps = state => ({
-  
-})
+  user: state.auth.user,
+});
+const mapDispatchToProps = {
+  getBucketList: bucketList,
+};
 
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dashboard))

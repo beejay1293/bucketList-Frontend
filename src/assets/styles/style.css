@@ -252,9 +252,6 @@ a {
     width: 100%;
   }
 
-  .epic__mail {
-    display: none;
-  }
   .top-content {
     display: none;
   }
@@ -512,9 +509,6 @@ a {
     color: #fff;
   }
 
-  .epic__mail {
-    display: none;
-  }
   .message_container {
     width: 90%;
     background: #f1f1f1;
@@ -1446,30 +1440,10 @@ textarea:focus,
   font-family: 'roboto';
 }
 
-.delete-group {
-  display: inline;
-}
-
-.grp i {
-  padding: 5px;
-}
-
-.group__checkbox {
-  margin-left: 5px;
-  padding: 5px;
-  margin-top: 2px;
-  display: flex;
-}
-
-.send__to_group {
-  display: inline-block;
-}
-
-.grp__check {
-  display: inline-block;
-  padding: 4px;
-}
-
-.group__member_inline {
-  display: inline-block;
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
 }
