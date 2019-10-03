@@ -1,9 +1,9 @@
-import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS}  from '../constants';
+import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS, SINGLELIST_SUCCESS}  from '../constants';
 
 const initialState = {
     bucketLists : [],
     singleBucket: {},
-    bucketListItem: [],
+    bucketListItems: [],
     error: {},
     isLoading: false,
     success: ''
@@ -40,6 +40,12 @@ export default (state= initialState, action) => {
             return {
                 ...state,
                 success: "bucketList created successfully",
+                loading: false
+            }
+        case SINGLELIST_SUCCESS:
+            return {
+                ...state,
+                bucketListItems: action.payload,
                 loading: false
             }
         default:
