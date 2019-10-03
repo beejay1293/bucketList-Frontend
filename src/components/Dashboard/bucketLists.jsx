@@ -28,6 +28,8 @@ class MessageBody extends Component {
             id={bck.id}
             deleteModal={this.props.delete}
             editModal={this.props.edit}
+            addToListModal={this.props.addToList}
+            viewListModal= {this.props.viewList}
           />
         ))}
       </ul>

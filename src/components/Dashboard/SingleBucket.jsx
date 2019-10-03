@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { Col, Card, Button, CardTitle, CardText } from 'reactstrap';
 
 const SingleMessage = ({
-  name, created, deleteModal, id, editModal
+  name, created, deleteModal, id, editModal, addToListModal, viewListModal
 }) => (
   <Col sm="3">
   <Card body className="text-center bucketCard">
@@ -22,8 +22,8 @@ const SingleMessage = ({
     </div>
     <CardTitle>{name}</CardTitle>
     <CardText>Created on {created}.</CardText>
-    <Button>Add to List</Button>
-    <Button>View List</Button>
+    <Button onClick={addToListModal} id={`${id}||${name}`}>Add to List</Button>
+    <Button onClick={viewListModal} id={`${id}||${name}`}>View List</Button>
   </Card>
 </Col>
 );
