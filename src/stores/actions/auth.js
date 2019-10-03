@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { LOGIN_SUCCESS, SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, LOADING } from '../constants';
+import { LOGIN_SUCCESS, SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, AUTHENTICATING } from '../constants';
 import authAPI from '../utils/authAPI';
 
 
@@ -24,7 +24,7 @@ export const loginSuccess = user => ({
   });
 
   export const authenticating = () => ({
-      type: LOADING,
+      type: AUTHENTICATING,
   })
 
   const auth = (type, user, history) => async (dispatch) => {

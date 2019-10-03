@@ -85,6 +85,8 @@ The API is currently in version 1 (v1) and is hosted at
 The UI is currently hosted at
 
 [https://bucketlist-frontend.herokuapp.com/](https://bucketlist-frontend.herokuapp.com/)
+[https://xenodochial-curie-27fa92.netlify.com/](https://xenodochial-curie-27fa92.netlify.com/)
+
 
 ## API Documentation
 

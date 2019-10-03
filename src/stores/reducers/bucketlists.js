@@ -1,4 +1,4 @@
-import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS, SINGLELIST_SUCCESS}  from '../constants';
+import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS, SINGLELIST_SUCCESS,  VIEWLIST_ERROR}  from '../constants';
 
 const initialState = {
     bucketLists : [],
@@ -6,7 +6,8 @@ const initialState = {
     bucketListItems: [],
     error: {},
     isLoading: false,
-    success: ''
+    success: '',
+    pages: ''
 }
 
 export default (state= initialState, action) => {
@@ -15,7 +16,8 @@ export default (state= initialState, action) => {
         return {
             ...state,
             isLoading: false, 
-            bucketLists: action.payload,
+            bucketLists: action.payload.data,
+            pages: action.payload.pages
         }
         case BUCKETLISTS_ERROR:
             return {
@@ -46,6 +48,12 @@ export default (state= initialState, action) => {
             return {
                 ...state,
                 bucketListItems: action.payload,
+                loading: false
+            }
+        case  VIEWLIST_ERROR:
+            return {
+                ...state,
+                bucketListItems: [],
                 loading: false
             }
         default:

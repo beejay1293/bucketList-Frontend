@@ -15,7 +15,7 @@ class MessageBody extends Component {
 
 
   render() {
-    const { buckets } = this.props;
+    const { buckets, pages, changeP } = this.props;
     return (
       <React.Fragment>
       <ul className="buckets">
@@ -36,7 +36,7 @@ class MessageBody extends Component {
         ))}
       </ul>
       <div className="paginate-box">
-        <Paginate />
+      <Paginate items={pages} changePage={changeP}/>
       </div>
       </React.Fragment>
     );
@@ -49,6 +49,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
    buckets: state.buckets.bucketLists,
+   pages: state.buckets.pages,
 })
 
 

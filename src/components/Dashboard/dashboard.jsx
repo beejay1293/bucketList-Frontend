@@ -18,12 +18,28 @@ export class Dashboard extends Component {
     name: '',
     Dashboard: 'create',
     BucketId: '',
-    BucketName: ''
+    BucketName: '',
+    currentPage: 1
   };
 
+    componentWillMount() { 
+   if(!localStorage.getItem('jwToken')){
+     this.props.history.push('/')
+   }
+  }
 
   componentDidMount() {
-    this.props.getBucketList();
+    if(localStorage.getItem('jwToken')){
+      this.props.getBucketList();
+    }
+  }
+
+  handleLogout(e){
+    e.preventDefault()
+    localStorage.removeItem('jwToken')
+    if(!localStorage.getItem('jwToken')){
+        this.props.history.push('/')
+    }
   }
   
   async toggle(e='', state="", id="",names="") {
@@ -102,6 +118,23 @@ export class Dashboard extends Component {
     this.toggle()
   }
 
+  async handleChangePage(e){
+    const { getBucketList } = this.props;
+    const { id } = e.target
+    let index = parseInt(id, 10)
+    if(e.target.id === 'next'){
+     index = this.state.currentPage + 1
+    }
+
+    if(e.target.id === 'prev'){
+      index = this.state.currentPage - 1
+    }
+    await getBucketList(index)
+    this.setState({currentPage: index})
+
+    
+  }
+
   render() {
     const { modal, Dashboard, name,  BucketName } = this.state;
     const { SingleList } = this.props;
@@ -126,8 +159,8 @@ export class Dashboard extends Component {
          <Modal isOpen={modal} toggle={() => this.toggle()} modalTransition={{ timeout: 700 }} backdropTransition={{ timeout: 1300 }}>
            {Modals}
          </Modal>
-        <Header name={this.props.user.lastname}/>
-        <MainBody searchInputChange={e => this.handleInput(e)} create={(e, state) => this.toggle(e, 'create')} deleteM={(e, state) => this.toggle(e, 'delete')} editM={(e, state) => this.toggle(e, 'edit')} addToListM={(e, state) => this.toggle(e, 'addToList')} viewListM={(e, state) => this.toggle(e, 'viewList')}/>
+        <Header name={this.props.user.lastname} logout={(e) => this.handleLogout(e)}/>
+        <MainBody searchInputChange={e => this.handleInput(e)} create={(e, state) => this.toggle(e, 'create')} deleteM={(e, state) => this.toggle(e, 'delete')} editM={(e, state) => this.toggle(e, 'edit')} addToListM={(e, state) => this.toggle(e, 'addToList')} viewListM={(e, state) => this.toggle(e, 'viewList')} pageChange={e => this.handleChangePage(e)}/>
        
       </section>
     );
@@ -136,7 +169,8 @@ export class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
-  SingleList : state.buckets.bucketListItems
+  SingleList : state.buckets.bucketListItems,
+  authenticated: state.auth.isAuthenticated,
 });
 const mapDispatchToProps = {
   getBucketList: bucketList,
