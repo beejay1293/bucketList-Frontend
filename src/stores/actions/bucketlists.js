@@ -30,10 +30,10 @@ export const singleBucketList_success = (data) => ({
   payload: data
 })
 
-export const bucketList = () => async (dispatch) => {
+export const bucketList = (page, type) => async (dispatch) => {
   try {
     dispatch(loading());
-    const response = await getBucketLists()
+    const response = await getBucketLists(page, type)
     console.log(response);
     
     dispatch(bucketlist_success(response.data.data))

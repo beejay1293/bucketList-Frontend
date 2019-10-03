@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseUrl = 'https://bucketlists-app.herokuapp.com/api/v1/bucketlists'
 
 
-export const getBucketLists = (page=1) => axios(`${baseUrl}?page=${page}&limit=8`, {
+export const getBucketLists = (page=1, type =`?page=${page}&limit=8`) => axios(`${baseUrl}${type}`, {
     method: 'GET',
     headers: {
         accept: 'application/json',

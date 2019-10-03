@@ -5,10 +5,12 @@ import Lists from './bucketLists';
 
 
 
-const MainBody = ({create, deleteM, editM, addToListM, viewListM, id}) => (
+
+const MainBody = ({create, deleteM, editM, addToListM, viewListM, id, searchInputChange}) => (
   <div className="main__body">
-    <TopContent createBucket={create}/>
+    <TopContent createBucket={create} inputChange={searchInputChange}/>
     <Lists delete={deleteM} edit={editM} addToList={addToListM} viewList={viewListM}/>
+
   </div>
 );
 

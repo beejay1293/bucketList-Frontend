@@ -38,7 +38,8 @@ export class Dashboard extends Component {
       name: names,
       Dashboard: state,
       BucketId: id,
-      BucketName: names
+      BucketName: names,
+      searchName: ''
     }));
   }
 
@@ -50,6 +51,8 @@ export class Dashboard extends Component {
     const { name } = this.state;
     const {createNewBucket, getBucketList } = this.props
     const details = { name };
+    console.log(details);
+    
     await createNewBucket(details);
     this.toggle()
     await getBucketList();
@@ -66,7 +69,15 @@ export class Dashboard extends Component {
 
   handleInput(e){
     const {name, value } = e.target;
-    this.setState({[name]: value});
+    const v = value.toUpperCase()
+    this.setState({[name]: v});    
+    if(name === 'searchName'){
+       const { getBucketList } = this.props
+       getBucketList(1, `?q=${value.toUpperCase()}`)
+    } else if(name === ''){
+      const { getBucketList } = this.props
+      getBucketList()
+    }
   } 
 
   async handleUpdateBucket(e){
@@ -114,7 +125,7 @@ export class Dashboard extends Component {
            {Modals}
          </Modal>
         <Header name={this.props.user.lastname}/>
-        <MainBody create={(e, state) => this.toggle(e, 'create')} deleteM={(e, state) => this.toggle(e, 'delete')} editM={(e, state) => this.toggle(e, 'edit')} addToListM={(e, state) => this.toggle(e, 'addToList')} viewListM={(e, state) => this.toggle(e, 'viewList')}/>
+        <MainBody searchInputChange={e => this.handleInput(e)} create={(e, state) => this.toggle(e, 'create')} deleteM={(e, state) => this.toggle(e, 'delete')} editM={(e, state) => this.toggle(e, 'edit')} addToListM={(e, state) => this.toggle(e, 'addToList')} viewListM={(e, state) => this.toggle(e, 'viewList')}/>
        
       </section>
     );
