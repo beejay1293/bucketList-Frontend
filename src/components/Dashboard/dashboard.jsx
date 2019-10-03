@@ -67,16 +67,18 @@ export class Dashboard extends Component {
      await getBucketList();
   }
 
-  handleInput(e){
+  async handleInput(e){
     const {name, value } = e.target;
     const v = value.toUpperCase()
     this.setState({[name]: v});    
-    if(name === 'searchName'){
+    if(name === 'searchName' && value.trim() !== ''){
        const { getBucketList } = this.props
-       getBucketList(1, `?q=${value.toUpperCase()}`)
-    } else if(name === ''){
+       await getBucketList(1, `?q=${value.toUpperCase().trim()}`)
+    } else{
+      console.log(name);
+      
       const { getBucketList } = this.props
-      getBucketList()
+      await getBucketList()
     }
   } 
 
