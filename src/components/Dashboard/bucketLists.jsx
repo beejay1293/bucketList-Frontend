@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 import SingleBucket from './SingleBucket';
 import  { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Paginate from './paginate';
 
 class MessageBody extends Component {
   constructor() {
@@ -16,6 +17,7 @@ class MessageBody extends Component {
   render() {
     const { buckets } = this.props;
     return (
+      <React.Fragment>
       <ul className="buckets">
         {buckets.map(bck => (
           <SingleBucket
@@ -33,6 +35,10 @@ class MessageBody extends Component {
           />
         ))}
       </ul>
+      <div className="paginate-box">
+        <Paginate />
+      </div>
+      </React.Fragment>
     );
   }
 }
