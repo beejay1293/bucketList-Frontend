@@ -31,7 +31,6 @@ export class Register extends Component {
     if(firstname === '' || lastname === '' || email === '' || password === ''){
        toast.error('Fill in missing fields')
     } else if(password !== pw2){
-      console.log(pw2);
       
       toast.error('Password does not match')
     } else if (!validator.isEmail(email)) {

@@ -30,9 +30,9 @@ export const loginSuccess = user => ({
   const auth = (type, user, history) => async (dispatch) => {
      try {
         dispatch(authenticating());
-        
+
         const response = await authAPI(type, user);
-        localStorage.setItem('jwToken', response.data.data.token);
+        await localStorage.setItem('jwToken', response.data.data.token);
         const dispatchType = type === 'signup' ? signupSuccess : loginSuccess
         dispatch(dispatchType(response.data.data));
         toast.success("LOGIN SUCCESS");

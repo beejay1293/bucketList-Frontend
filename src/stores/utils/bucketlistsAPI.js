@@ -2,19 +2,15 @@ import axios from 'axios';
 
 const baseUrl = 'https://bucketlists-app.herokuapp.com/api/v1/bucketlists'
 
-let userToken;
-
-if (localStorage.getItem('jwToken')) {
-  userToken = localStorage.getItem('jwToken'); 
-}
+  const userToken = localStorage.getItem('jwToken'); 
 
 
-export const getBucketLists = () => axios(`${baseUrl}`, {
+export const getBucketLists = (page=1) => axios(`${baseUrl}?page=${page}&limit=8`, {
     method: 'GET',
     headers: {
         accept: 'application/json',
         'Content-type': 'application/json; charset=UTF-8',
-        token: userToken,
+        token: localStorage.getItem('jwToken'),
       },
 })
 

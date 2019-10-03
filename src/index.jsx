@@ -6,6 +6,7 @@ import App from './components/App';
 import './assets/styles/style.css';
 import setAuthToken from './stores/utils/setAuthToken';
 import { loginSuccess } from './stores/actions/auth';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 if (localStorage.jwToken) {

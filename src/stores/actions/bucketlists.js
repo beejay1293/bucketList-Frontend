@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify'
-import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS}  from '../constants';
+import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS}  from '../constants';
 import { getBucketLists, getSingleBucketList, createBucketList, editBucketList, deleteBucketList} from '../utils/bucketlistsAPI';
 
 export const bucketlist_success = (data) => ({
@@ -16,10 +16,14 @@ export const loading = () => ({
   type: LOADING,
 })
 
+export const create_success = () => ({
+  type: CREATE_SUCCESS,
+})
+
 export const singleBucket_success = (data) => ({
   type: SINGLEBUCKET_SUCCEESS,
   payload: data
-})
+}) 
 export const bucketList = () => async (dispatch) => {
   try {
     dispatch(loading());
@@ -33,7 +37,7 @@ export const bucketList = () => async (dispatch) => {
      console.log(err);
      
      dispatch(bucketlist_error());
-     toast.error(err.data.error)
+     toast.error("try again, an error occured")
   }
 }
 
@@ -54,24 +58,41 @@ export const getSingleBucket = (id) => async (dispatch) => {
 
 export const deleteSingleBucket = (id) => async(dispatch) => {
   try {
+    dispatch(loading())
+    const response = await deleteBucketList(id)
+    console.log(response);
     
+    toast.success(response.data.messages)
   } catch (error) {
-    
+    console.log(error);
+    toast.error("error occured, please try again")
   }
 }
 
 export const createBucket  = (details) => async(dispatch) => {
   try {
-    
+    dispatch(loading());
+    const response = await createBucketList(details);
+    toast.success("BucketList successfully created")
+    dispatch(create_success())
+    console.log(response)
   } catch (error) {
-    
+    const err = error.response;
+    console.log(err);
+    toast.error("an error occured, try again") 
   }
 }
 
-export const updateSingleBucket = (id) => async(dispatch) => {
+export const updateSingleBucket = (id, details) => async(dispatch) => {
 try {
+  dispatch(loading());
+  const response = await editBucketList(id, details);
+  console.log(response);
   
+  toast.success('succesfully updated')
 } catch (error) {
+  console.log(error);
   
+  toast.error("sorry, an error occured")
 }
 }
