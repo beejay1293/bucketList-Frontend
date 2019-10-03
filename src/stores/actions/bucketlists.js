@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify'
-import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS, SINGLELIST_SUCCESS}  from '../constants';
-import { getBucketLists, getSingleBucketList, createBucketList, editBucketList, deleteBucketList, addToBucketLists, getListItems} from '../utils/bucketlistsAPI';
+import { BUCKETLISTS_SUCCESS, BUCKETLISTS_ERROR, LOADING, SINGLEBUCKET_SUCCEESS, CREATE_SUCCESS, SINGLELIST_SUCCESS,  VIEWLIST_ERROR}  from '../constants';
+import { getBucketLists, createBucketList, editBucketList, deleteBucketList, addToBucketLists, getListItems} from '../utils/bucketlistsAPI';
 
 export const bucketlist_success = (data) => ({
   type: BUCKETLISTS_SUCCESS,
@@ -30,89 +30,58 @@ export const singleBucketList_success = (data) => ({
   payload: data
 })
 
+export const viewBucketList_error = () => ({
+  type: VIEWLIST_ERROR
+})
+
 export const bucketList = (page, type) => async (dispatch) => {
   try {
     dispatch(loading());
     const response = await getBucketLists(page, type)
-    console.log(response);
+    dispatch(bucketlist_success(response.data))
     
-    dispatch(bucketlist_success(response.data.data))
-    
-  } catch (error) {
-     const err = error.response;
-     console.log(err);
-     
+  } catch (error) {   
      dispatch(bucketlist_error());
      toast.error("try again, an error occured")
   }
 }
 
-export const getSingleBucket = (id) => async (dispatch) => {
-  try {
-    dispatch(loading());
-    const response = await getSingleBucketList(id);
-    console.log(response)
-
-    dispatch()
-    
-  } catch (error) {
-    const err = error.response
-    console.log(err)
-    
-  }
-}
 
 export const deleteSingleBucket = (id) => async(dispatch) => {
   try {
     dispatch(loading())
     const response = await deleteBucketList(id)
-    console.log(response);
-    
     toast.success(response.data.messages)
   } catch (error) {
-    console.log(error);
     toast.error("error occured, please try again")
   }
 }
 
 export const createBucket  = (details) => async(dispatch) => {
   try {
-    dispatch(loading());
-    const response = await createBucketList(details);
+    await createBucketList(details);
     toast.success("BucketList successfully created")
     dispatch(create_success())
-    console.log(response)
   } catch (error) {
-    const err = error.response;
-    console.log(err);
     toast.error("an error occured, try again") 
   }
 }
 
 export const updateSingleBucket = (id, details) => async(dispatch) => {
 try {
-  dispatch(loading());
-  const response = await editBucketList(id, details);
-  console.log(response);
-  
+  await editBucketList(id, details);
   toast.success('succesfully updated')
-} catch (error) {
-  console.log(error);
-  
+} catch (error) {  
   toast.error("sorry, an error occured")
 }
 }
 
 export const addToSingleBucketList = (id, details) => async(dispatch) => {
   try {
-    const response = await addToBucketLists(id, details);
-    console.log(response);
+     await addToBucketLists(id, details);
     toast.success("Item successfully added to bucketList")
-    
   } catch (error) {
-    console.log(error);
     toast.error("Sorry, an error occured");
-    
   }
 }
 
@@ -121,9 +90,13 @@ export const viewBucketList = (id) => async(dispatch) => {
     dispatch(loading())
     const response = await getListItems(id);
     dispatch(singleBucketList_success(response.data.data))
-    console.log(response);
   } catch (error) {
-    console.log(error);
-    toast.error('Sorry, an error occured')
+    const err = error && error.response
+    if(err.data.message === "no item has been added to this bucketlist"){
+     dispatch(viewBucketList_error());
+      toast.error(err.data.message)
+    }else {
+      toast.error("an error occured, please try again")
+    }  
   }
 }

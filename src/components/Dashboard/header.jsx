@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = ({name}) => (
+const Header = ({name, logout}) => (
   <header className="header__container">
     <div className="logo">
       <h1 className="header">
@@ -26,7 +26,7 @@ BUCKET
           </h5>
           <div className="dropdown-content">
 
-            <a href="/" className="reset__password">logout</a>
+            <a href="/" className="reset__password" onClick={logout}>logout</a>
           </div>
 
         </i>
