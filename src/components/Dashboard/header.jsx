@@ -26,7 +26,7 @@ BUCKET
           </h5>
           <div className="dropdown-content">
 
-            <a href="/login" className="reset__password">logout</a>
+            <a href="/" className="reset__password">logout</a>
           </div>
 
         </i>

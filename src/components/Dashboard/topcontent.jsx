@@ -1,9 +1,10 @@
 import React from 'react';
+import Compose from './compose';
 
-const TopContent = () => (
+const TopContent = ({createBucket}) => (
   <div className="top-content">
-    <input type="checkbox" className="first" />
-    <i className="fas fa-redo-alt reload" id="reload" />
+    <Compose click={createBucket}/>
+    <input className="first" placeholder="search"/>
   </div>
 );
 

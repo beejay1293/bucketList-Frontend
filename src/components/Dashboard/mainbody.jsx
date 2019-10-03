@@ -1,11 +1,14 @@
 import React from 'react';
 import TopContent from './topcontent';
-import Message from './messagebody';
+import Lists from './bucketLists';
 
-const MainBody = () => (
+
+
+
+const MainBody = ({create, deleteM, editM, id}) => (
   <div className="main__body">
-    <TopContent />
-    <Message />
+    <TopContent createBucket={create}/>
+    <Lists delete={deleteM} edit={editM} />
   </div>
 );
 
