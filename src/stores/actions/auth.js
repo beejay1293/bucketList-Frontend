@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { LOGIN_SUCCESS, SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, AUTHENTICATING } from '../constants';
+import { LOGIN_SUCCESS, SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, AUTHENTICATING, LOGOUT } from '../constants';
 import authAPI from '../utils/authAPI';
 
 
@@ -27,6 +27,14 @@ export const loginSuccess = user => ({
       type: AUTHENTICATING,
   })
 
+  export const logout = () => ({
+    type: LOGOUT
+  })
+
+  export const signOut = () => async (dispatch) => {
+    dispatch(logout())
+  }
+
   const auth = (type, user, history) => async (dispatch) => {
      try {
         dispatch(authenticating());
@@ -35,7 +43,9 @@ export const loginSuccess = user => ({
         await localStorage.setItem('jwToken', response.data.data.token);
         const dispatchType = type === 'signup' ? signupSuccess : loginSuccess
         dispatch(dispatchType(response.data.data));
-        toast.success("LOGIN SUCCESS");
+        const message = type === 'signup' ? "SIGNUP SUCCESS" : "LOGIN SUCCESS"
+        
+        toast.success(message);
         history.push('/dashboard');
 
      } catch (error) {

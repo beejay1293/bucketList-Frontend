@@ -1,5 +1,5 @@
 
-import { LOGIN_SUCCESS, LOGIN_ERROR, SIGNUP_SUCCESS, SIGNUP_ERROR, AUTHENTICATING } from '../constants';
+import { LOGIN_SUCCESS, LOGIN_ERROR, SIGNUP_SUCCESS, SIGNUP_ERROR, AUTHENTICATING, LOGOUT } from '../constants';
 const initialState = {
   isAuthenticated: !!localStorage.getItem('jwToken'),
   error: {},
@@ -15,7 +15,8 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: false,
         user: action.payload,
-        error: {}
+        error: {},
+        isAuthenticated: !!localStorage.getItem('jwToken')
       };
     case LOGIN_ERROR:
     case SIGNUP_ERROR:
@@ -30,6 +31,11 @@ export default (state = initialState, action) => {
         ...state,
         isLoading: true,
       };
+    case LOGOUT: 
+       return {
+         ...state,
+         isAuthenticated: false,
+       }
     default:
       return state;
   }
