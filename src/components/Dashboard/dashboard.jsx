@@ -10,6 +10,7 @@ import DeleteModal from './deleteModal';
 import EditModal from './editModal';
 import AddToListModal from './addToListModal';
 import ViewListModal from './viewListModal';
+import { signOut } from '../../stores/actions/auth';
 
 
 export class Dashboard extends Component {
@@ -37,9 +38,9 @@ export class Dashboard extends Component {
   handleLogout(e){
     e.preventDefault()
     localStorage.removeItem('jwToken')
-    if(!localStorage.getItem('jwToken')){
-        this.props.history.push('/')
-    }
+    const { logout } = this.props;
+    logout()
+    this.props.history.push('/')
   }
   
   async toggle(e='', state="", id="",names="") {
@@ -178,7 +179,8 @@ const mapDispatchToProps = {
   deleteBucket: deleteSingleBucket,
   updateBucket: updateSingleBucket,
   addToBucketList: addToSingleBucketList,
-  viewLists: viewBucketList
+  viewLists: viewBucketList,
+  logout: signOut
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Dashboard))
